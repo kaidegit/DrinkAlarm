@@ -6,5 +6,6 @@
 #define MAIN_ARDUINO_MAIN_H
 
 #include "Arduino.h"
+#include "io_config.h"
 
 #endif //MAIN_ARDUINO_MAIN_H
