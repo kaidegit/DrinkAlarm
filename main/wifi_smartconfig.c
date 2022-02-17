@@ -32,61 +32,72 @@ static const int CONNECTED_BIT = BIT0;
 static const int ESPTOUCH_DONE_BIT = BIT1;
 static const char *TAG = "smartconfig";
 
+#define WIFI_SSID_LENGTH_MAX 32
+#define WIFI_PASS_LENGTH_MAX 64
+
 static esp_err_t save_wifi_to_flash(char *ssid, char *password) {
     nvs_handle_t save_wifi_nvs_handle;
-    static char *TAG = "NSV save ap";
-    char *data_temp;
-    data_temp = malloc(64);
+    static char *TAG = "NSV save wifi";
+
+    char *date_to_save;
+    date_to_save = malloc(WIFI_PASS_LENGTH_MAX);
     if (nvs_open("nvs", NVS_READWRITE, &save_wifi_nvs_handle) != ESP_OK) {
         ESP_LOGE(TAG, "open nvs fail");
         nvs_close(save_wifi_nvs_handle);
         return ESP_ERR_NVS_NOT_FOUND;
     }
+
     ESP_LOGI(TAG, "open nvs success,saving.....");
-    memset(data_temp, 0, 64);
-    strcpy(data_temp, ssid);
-    if (nvs_set_str(save_wifi_nvs_handle, "ssid", data_temp) != ESP_OK) {
+    memset(date_to_save, 0, WIFI_PASS_LENGTH_MAX);
+    strcpy(date_to_save, ssid);
+    if (nvs_set_str(save_wifi_nvs_handle, "ssid", date_to_save) != ESP_OK) {
         ESP_LOGE(TAG, "nvs save ssid fail");
         nvs_close(save_wifi_nvs_handle);
         return ESP_ERR_NVS_NOT_FOUND;
     }
-    ESP_LOGI(TAG, "save ssid:%s", data_temp);
-    memset(data_temp, 0, 64);
-    strcpy(data_temp, password);
-    if (nvs_set_str(save_wifi_nvs_handle, "password", data_temp) != ESP_OK) {
+    ESP_LOGI(TAG, "saved ssid:%s", date_to_save);
+
+    memset(date_to_save, 0, WIFI_PASS_LENGTH_MAX);
+    strcpy(date_to_save, password);
+    if (nvs_set_str(save_wifi_nvs_handle, "password", date_to_save) != ESP_OK) {
         ESP_LOGE(TAG, "nvs save password fail");
         nvs_close(save_wifi_nvs_handle);
         return ESP_ERR_NVS_NOT_FOUND;
     }
-    ESP_LOGI(TAG, "save password:%s", data_temp);
-    free(data_temp);
+    ESP_LOGI(TAG, "saved password:%s", date_to_save);
+
+    free(date_to_save);
     nvs_close(save_wifi_nvs_handle);
     return ESP_OK;
 }
 
 static esp_err_t read_wifi_from_flash(wifi_config_t *nvs_wifi_config) {
     nvs_handle_t read_wifi_nvs_handler;
+    static char *TAG = "NVS read WiFi";
 
-    static char *TAG = "NVS GET AP";
     if (nvs_open("nvs", NVS_READONLY, &read_wifi_nvs_handler) != ESP_OK) {
         ESP_LOGE(TAG, "nvs open fail");
         nvs_close(read_wifi_nvs_handler);
         return ESP_ERR_NVS_NOT_FOUND;
     }
-    size_t sta_size = sizeof((char *) nvs_wifi_config->sta.ssid);
-    if (nvs_get_str(read_wifi_nvs_handler, "ssid", (char *) nvs_wifi_config->sta.ssid, &sta_size) != ESP_OK) {
+
+    size_t length_to_read = WIFI_SSID_LENGTH_MAX;
+    if (nvs_get_str(read_wifi_nvs_handler, "ssid", (char *) nvs_wifi_config->sta.ssid, &length_to_read) != ESP_OK) {
         ESP_LOGE(TAG, "nvs get ssid fail");
         nvs_close(read_wifi_nvs_handler);
         return ESP_ERR_NVS_NOT_FOUND;
     }
     ESP_LOGI(TAG, "nvs get ssid:%s", nvs_wifi_config->sta.ssid);
-    sta_size = 0;
-    if (nvs_get_str(read_wifi_nvs_handler, "password", (char *) nvs_wifi_config->sta.password, &sta_size) != ESP_OK) {
+
+    length_to_read = WIFI_PASS_LENGTH_MAX;
+    if (nvs_get_str(read_wifi_nvs_handler, "password", (char *) nvs_wifi_config->sta.password, &length_to_read) !=
+        ESP_OK) {
         ESP_LOGE(TAG, "nvs get password fail");
         nvs_close(read_wifi_nvs_handler);
         return ESP_ERR_NVS_NOT_FOUND;
     }
     ESP_LOGI(TAG, "nvs get password:%s", nvs_wifi_config->sta.password);
+
     nvs_close(read_wifi_nvs_handler);
     return ESP_OK;
 }
@@ -175,8 +186,8 @@ void initialise_wifi(void) {
     ESP_ERROR_CHECK(esp_wifi_start());
 }
 
-void connect_wifi_from_flash(){
-    wifi_config_t wifi_config;
+void connect_wifi_from_flash() {
+    wifi_config_t wifi_config = {0};
     if (read_wifi_from_flash(&wifi_config) != ESP_OK) {
         return;
     }
