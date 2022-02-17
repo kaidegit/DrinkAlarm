@@ -28,8 +28,10 @@ void setup() {
     // 检查WiFi状态（是否进入smart config），选择是否读取flash来连接WiFi
     connect_wifi_from_flash();
     //读flash中的闹钟时长
-    read_alarm_to_flash();
+    read_alarm_from_flash();
     ESP_LOGI("alarm", "get alarm time", alarm_time);
+
+    connect_wifi_from_flash();
 }
 
 void loop() {

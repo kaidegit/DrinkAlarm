@@ -9,7 +9,7 @@
 
 void set_alarm_time();
 
-esp_err_t read_alarm_to_flash();
+esp_err_t read_alarm_from_flash();
 
 void alarm_callback();
 
