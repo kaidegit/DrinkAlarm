@@ -21,6 +21,7 @@
 #include "esp_netif.h"
 #include "esp_smartconfig.h"
 #include "wifi_smartconfig.h"
+#include "oled.h"
 
 /* FreeRTOS event group to signal when we are connected & ready to make a request */
 EventGroupHandle_t s_wifi_event_group;
@@ -189,6 +190,7 @@ esp_err_t connect_wifi_from_flash() {
     }
     esp_wifi_set_config(WIFI_IF_STA, &wifi_config);
     esp_wifi_connect();
+    OLED_WaitWifiConn();
     return ESP_OK;
 }
 

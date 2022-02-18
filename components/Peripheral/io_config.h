@@ -18,7 +18,9 @@
 #define OLED_SPI_HOST VSPI_HOST
 
 // Cup state
-#define IS_CUP_ON() (digitalRead(SENSOR_Pin) == LOW)
-#define IS_CUP_OFF() (digitalRead(SENSOR_Pin) == HIGH)
+#include "hal/gpio_types.h"
+#include "driver/gpio.h"
+#define IS_CUP_ON() (gpio_get_level((gpio_num_t)SENSOR_Pin) == 0)
+#define IS_CUP_OFF() (gpio_get_level((gpio_num_t)SENSOR_Pin) == 1)
 
 #endif //MAIN_IO_CONFIG_H

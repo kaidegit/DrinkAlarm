@@ -10,6 +10,7 @@
 #include "esp_log.h"
 #include "time_sync.h"
 #include "wifi_smartconfig.h"
+#include "oled.h"
 
 time_sync_state_t timeSyncState = 0;
 
@@ -38,6 +39,8 @@ esp_err_t sync_time_sntp(void) {
         return ESP_ERR_WIFI_NOT_CONNECT;
     }
 
+    OLED_WaitTimeSync();
+
     char strftime_buf[64];
     initialize_sntp();
 
@@ -54,7 +57,7 @@ esp_err_t sync_time_sntp(void) {
             return ESP_ERR_TIMEOUT;
         }
         ESP_LOGI(TAG, "Waiting for system time to be set... (%d)", ++retry);
-        delay(100);
+        vTaskDelay(100 / portTICK_RATE_MS);
         time(&now);
         localtime_r(&now, &timeinfo);
     }
@@ -69,4 +72,17 @@ esp_err_t sync_time_sntp(void) {
     timeSyncState = TIME_SYNC_SUCCESS;
     sntp_stop();
     return ESP_OK;
+}
+
+uint16_t  get_time(uint8_t *hr, uint8_t *min, uint8_t *sec) {
+    time_t now = 0;
+    struct tm timeinfo = {0};
+    time(&now);
+    localtime_r(&now, &timeinfo);
+    if ((hr != NULL) && (min != NULL) && (sec != NULL)) {
+        *hr = timeinfo.tm_hour;
+        *min = timeinfo.tm_min;
+        *sec = timeinfo.tm_sec;
+    }
+    return timeinfo.tm_hour * 60 * 60 + timeinfo.tm_min * 60 + timeinfo.tm_sec;
 }

@@ -5,6 +5,7 @@
 #include "peripheral_init.h"
 #include "io_config.h"
 
+spi_device_handle_t oled_spi_handle;
 void OLED_SPI_Init() {
     spi_bus_config_t buscfg = {
             .miso_io_num=-1,

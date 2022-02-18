@@ -5,8 +5,6 @@
 #ifndef MAIN_ALARM_H
 #define MAIN_ALARM_H
 
-#include "arduino_main.h"
-
 void set_alarm_time();
 
 esp_err_t read_alarm_from_flash();

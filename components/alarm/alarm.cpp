@@ -4,12 +4,16 @@
 
 #include <nvs.h>
 #include <esp_task_wdt.h>
+#include <esp_log.h>
 #include "alarm.h"
 #include "alarm_url.h"
+#include "oled.h"
+#include "io_config.h"
 
 #ifndef ALARM_URL
     #error Please set alarm url string with define
 #endif
+// 闹钟时长，单位分钟
 uint8_t alarm_time;
 
 static char *TAG = (char *) "alarm";
@@ -74,30 +78,31 @@ void set_alarm_time() {
             break;
         }
     }
-
+    OLED_ShowTimeSet(alarm_time_setting_list[set_time_index]);
     while (count++ < 2000) {
         esp_task_wdt_reset();
-        delay(10);
+        vTaskDelay(10 / portTICK_RATE_MS);
         // 检测移开
         if (IS_CUP_OFF()) {
-            delay(10);
+            vTaskDelay(10 / portTICK_RATE_MS);
             if (IS_CUP_OFF()) {
                 set_time_index++;
                 if (set_time_index >= ALARM_TIME_LIST_LENGTH) {
                     set_time_index = 0;
                 }
+                OLED_ShowTimeSet(alarm_time_setting_list[set_time_index]);
                 ESP_LOGI(TAG, "select %d", alarm_time_setting_list[set_time_index]);
             }
         }
         // 等待放回（移开结束）
         while (IS_CUP_OFF()) {
             esp_task_wdt_reset();
-            delay(10);
+            vTaskDelay(10 / portTICK_RATE_MS);
         }
     }
     alarm_time = alarm_time_setting_list[set_time_index];
     save_alarm_to_flash();
-    delay(1000);
+    vTaskDelay(1000 / portTICK_RATE_MS);
     esp_restart();
 }
 

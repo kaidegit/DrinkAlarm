@@ -9,9 +9,11 @@
 extern "C" {
 #endif
 
-#include "arduino_main.h"
+#include "esp_err.h"
 
 esp_err_t sync_time_sntp(void);
+
+uint16_t get_time(uint8_t *hr, uint8_t *min, uint8_t *sec);
 
 typedef int time_sync_state_t;
 

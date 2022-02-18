@@ -9,6 +9,8 @@
 extern "C" {
 #endif
 
+#include "freertos/event_groups.h"
+
 void initialise_wifi(void);
 
 esp_err_t connect_wifi_from_flash();
