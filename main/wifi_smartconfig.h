@@ -11,11 +11,16 @@ extern "C" {
 
 void initialise_wifi(void);
 
-void connect_wifi_from_flash();
+esp_err_t connect_wifi_from_flash();
 
 void smartconfig_task(void *parm);
 
 void start_smartconfig();
+
+extern EventGroupHandle_t s_wifi_event_group;
+
+extern const int CONNECTED_BIT;
+extern const int ESPTOUCH_DONE_BIT;
 
 #ifdef __cplusplus
 }

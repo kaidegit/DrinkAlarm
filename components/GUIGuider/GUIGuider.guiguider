@@ -1,0 +1,235 @@
+{
+	"projectName": "GUIGuider",
+	"lvglVersion": "v8",
+	"boardPlatformSettings": {
+		"resolution": {
+			"width": "128",
+			"height": "128"
+		},
+		"color_depth": 16,
+		"name": "Simulator",
+		"OS": "Windows/Linux",
+		"mcu": "Simulator",
+		"mcuxpresso_config": {
+			"CMAKE_BUILD_TYPE": "null"
+		},
+		"display_part_number": [
+			"Simulator"
+		]
+	},
+	"BuildStatus": {
+		"supportPXP": false,
+		"enable_pxp": false
+	},
+	"version": "1.3.0-GA",
+	"lvConf": {
+		"LV_HOR_RES_MAX": "(128)",
+		"LV_VER_RES_MAX": "(128)",
+		"LV_COLOR_DEPTH": 16,
+		"LV_COLOR_16_SWAP": false,
+		"LV_MEM_CUSTOM": false,
+		"LV_MEM_SIZE": "320",
+		"LV_MEM_ADR": false,
+		"LV_MEM_AUTO_DEFRAG": true,
+		"LV_MEM_CUSTOM_INCLUDE": "<stdlib.h>",
+		"LV_MEM_CUSTOM_ALLOC": "malloc",
+		"LV_MEM_CUSTOM_FREE": "free",
+		"LV_USE_GPU": true,
+		"LV_USE_GPU_NXP_PXP": "~~",
+		"LV_USE_GPU_NXP_PXP_AUTO_INIT": "~~",
+		"LV_USE_GPU_NXP_VG_LITE": "~~",
+		"LV_ATTRIBUTE_MEM_ALIGN_SIZE": "~~",
+		"LV_ATTRIBUTE_MEM_ALIGN": "~~",
+		"LV_DISP_DEF_REFR_PERIOD": "30",
+		"LV_USE_PERF_MONITOR": false
+	},
+	"ImportFonts": {
+		"simsun": "font\\simsun.woff",
+		"montserratMedium": "font\\Montserrat-medium.ttf"
+	},
+	"FrontJson": [
+		{
+			"name": "screen",
+			"list": [
+				{
+					"name": "label_1",
+					"type": "label",
+					"left": 12,
+					"top": 21,
+					"is_move_animation": false,
+					"desX": 0,
+					"desY": 0,
+					"path_type": "linear",
+					"duration": 100,
+					"width": 100,
+					"height": 32,
+					"text": "HelloWorld",
+					"text_align": "center",
+					"long_mode": "LV_LABEL_LONG_WRAP",
+					"part": "LV_PART_MAIN",
+					"state": "LV_STATE_DEFAULT",
+					"disable": false,
+					"bg_color": "#2195f6",
+					"bg_grad_color": "#2195f6",
+					"bg_grad_dir": "LV_GRAD_DIR_VER",
+					"bg_opa": 0,
+					"text_color": "#000000",
+					"font": 12,
+					"font_family": "montserratMedium",
+					"letter_space": 2,
+					"radius": 0,
+					"paddingTop": 0,
+					"paddingRight": 0,
+					"paddingBottom": 0,
+					"paddingLeft": 0,
+					"style": [
+						{
+							"part": "LV_PART_MAIN",
+							"state": "LV_STATE_DEFAULT",
+							"disable": false,
+							"radius": 0,
+							"text_color": "#000000",
+							"font": 12,
+							"font_family": "montserratMedium",
+							"letter_space": 2,
+							"bg_color": "#2195f6",
+							"bg_grad_color": "#2195f6",
+							"bg_opa": 0,
+							"bg_grad_dir": "LV_GRAD_DIR_VER",
+							"paddingTop": 0,
+							"paddingRight": 0,
+							"paddingBottom": 0,
+							"paddingLeft": 0
+						},
+						{
+							"part": "LV_PART_MAIN",
+							"state": "LV_STATE_DISABLED",
+							"disable": true,
+							"radius": 0,
+							"text_color": "#000000",
+							"font": 12,
+							"font_family": "simsun",
+							"letter_space": 2,
+							"bg_color": "#2195f6",
+							"bg_grad_color": "#2195f6",
+							"bg_opa": 0,
+							"bg_grad_dir": "LV_GRAD_DIR_VER",
+							"paddingTop": 0,
+							"paddingRight": 0,
+							"paddingBottom": 0,
+							"paddingLeft": 0
+						}
+					],
+					"id": "oaasq2cn",
+					"default_style": false
+				}
+			],
+			"part": "LV_PART_MAIN",
+			"state": "LV_STATE_DEFAULT",
+			"disable": false,
+			"bg_color": "#ffffff",
+			"bg_opa": 0,
+			"style": [
+				{
+					"part": "LV_PART_MAIN",
+					"state": "LV_STATE_DEFAULT",
+					"disable": false,
+					"bg_color": "#ffffff",
+					"bg_opa": 0
+				}
+			]
+		}
+	],
+	"FrontStatus": {},
+	"Application": {
+		"name": "testingJson",
+		"size": {
+			"width": "128",
+			"height": "128"
+		},
+		"version": "test_v1",
+		"default_scr": "screen",
+		"theme": "LV_THEME_MATERIAL_FLAG_LIGHT",
+		"screen": [
+			{
+				"name": "screen",
+				"type": "scr",
+				"style": [
+					{
+						"part": "LV_PART_MAIN",
+						"state": "LV_STATE_DEFAULT",
+						"disable": false,
+						"bg_color": "#ffffff",
+						"bg_opa": 0
+					}
+				],
+				"widgets": [
+					{
+						"name": "screen_label_1",
+						"type": "label",
+						"pos": [
+							12,
+							21
+						],
+						"size": [
+							100,
+							32
+						],
+						"is_move_animation": false,
+						"path_type": "linear",
+						"move_animation": {
+							"des_pos": [
+								0,
+								0
+							],
+							"duration": 100
+						},
+						"default_style": false,
+						"text": "HelloWorld",
+						"long_mode": "LV_LABEL_LONG_WRAP",
+						"text_align": "center",
+						"style": [
+							{
+								"part": "LV_PART_MAIN",
+								"state": "LV_STATE_DEFAULT",
+								"disable": false,
+								"radius": 0,
+								"text_color": "#000000",
+								"font": 12,
+								"font_family": "montserratMedium",
+								"letter_space": 2,
+								"bg_color": "#2195f6",
+								"bg_grad_color": "#2195f6",
+								"bg_opa": 0,
+								"bg_grad_dir": "LV_GRAD_DIR_VER",
+								"paddingTop": 0,
+								"paddingRight": 0,
+								"paddingBottom": 0,
+								"paddingLeft": 0
+							},
+							{
+								"part": "LV_PART_MAIN",
+								"state": "LV_STATE_DISABLED",
+								"disable": true,
+								"radius": 0,
+								"text_color": "#000000",
+								"font": 12,
+								"font_family": "simsun",
+								"letter_space": 2,
+								"bg_color": "#2195f6",
+								"bg_grad_color": "#2195f6",
+								"bg_opa": 0,
+								"bg_grad_dir": "LV_GRAD_DIR_VER",
+								"paddingTop": 0,
+								"paddingRight": 0,
+								"paddingBottom": 0,
+								"paddingLeft": 0
+							}
+						]
+					}
+				]
+			}
+		],
+		"event": []
+	}
+}

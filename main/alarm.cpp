@@ -64,13 +64,13 @@ const uint8_t alarm_time_setting_list[] = {
 
 // 调时间逻辑：进入设置时杯子为放回状态，抬起一次下一个设定时间，放回20秒后为设定时间。
 void set_alarm_time() {
-    uint8_t set_time = 0;
+    uint8_t set_time_index = 0;
     uint16_t count = 0;
 
     read_alarm_from_flash();
     for (auto i = 0; i < ALARM_TIME_LIST_LENGTH; i++) {
         if (alarm_time == alarm_time_setting_list[i]) {
-            set_time = i;
+            set_time_index = i;
             break;
         }
     }
@@ -82,11 +82,11 @@ void set_alarm_time() {
         if (IS_CUP_OFF()) {
             delay(10);
             if (IS_CUP_OFF()) {
-                set_time++;
-                if (set_time >= ALARM_TIME_LIST_LENGTH) {
-                    set_time = 0;
+                set_time_index++;
+                if (set_time_index >= ALARM_TIME_LIST_LENGTH) {
+                    set_time_index = 0;
                 }
-                ESP_LOGI(TAG, "select %d", alarm_time_setting_list[set_time]);
+                ESP_LOGI(TAG, "select %d", alarm_time_setting_list[set_time_index]);
             }
         }
         // 等待放回（移开结束）
@@ -95,7 +95,7 @@ void set_alarm_time() {
             delay(10);
         }
     }
-    alarm_time = alarm_time_setting_list[set_time];
+    alarm_time = alarm_time_setting_list[set_time_index];
     save_alarm_to_flash();
     delay(1000);
     esp_restart();

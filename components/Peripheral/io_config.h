@@ -15,6 +15,7 @@
 #define OLED_RES_Pin 21
 #define OLED_DC_Pin 5
 #define OLED_CS_Pin 17
+#define OLED_SPI_HOST VSPI_HOST
 
 // Cup state
 #define IS_CUP_ON() (digitalRead(SENSOR_Pin) == LOW)

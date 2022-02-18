@@ -5,33 +5,54 @@
 #include "arduino_main.h"
 #include <Wire.h>
 #include <nvs_flash.h>
-#include "U8g2lib.h"
 #include "esp_task_wdt.h"
 #include "wifi_smartconfig.h"
 #include "alarm.h"
+#include "time_sync.h"
+#include "peripheral_init.h"
+#include "oled.h"
+#include "lvgl_port.h"
+#include "gui_guider.h"
+#include "oledfont.h"
 
-//U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(
-//        U8G2_R0,
-//        /* reset=*/ U8X8_PIN_NONE,
-//        /* clock=*/ OLED_SCL_Pin,
-//        /* data=*/ OLED_SDA_Pin
-//);
+lv_ui guider_ui;
 
 void setup() {
     ESP_ERROR_CHECK(nvs_flash_init());
     pinMode(LED_Pin, OUTPUT);
     pinMode(SENSOR_Pin, INPUT);
     initialise_wifi();
-//    u8g2.begin();
+    OLED_Init();
+//    char ch[] = "helloworld";
+    OLED_Clear();
+//    OLED_FullFlash((char *) test);
+//    OLED_ShowString(0, 0, (uint8_t *) ch, 16);
+//    OLED_ShowString(0, 2, (uint8_t *) ch, 16);
+//    OLED_ShowString(0, 4, (uint8_t *) ch, 16);
+//    OLED_ShowString(0, 6, (uint8_t *) ch, 16);
+    GUI_Init();
+    setup_ui(&guider_ui);
+    xTaskCreate(
+            GUI_Run,
+            "GUI_Run",
+            4096 * 4,
+            NULL,
+            3,
+            NULL
+            );
     // 启动检查手势来进入设置，设置完后重启
     settings_action_catch();
-    // 检查WiFi状态（是否进入smart config），选择是否读取flash来连接WiFi
-    connect_wifi_from_flash();
+    // 尝试使用flash中信息连接WiFi，读不到信息则进入smartconfig
+    if (connect_wifi_from_flash() != ESP_OK) {
+        start_smartconfig();
+    }
     //读flash中的闹钟时长
     read_alarm_from_flash();
-    ESP_LOGI("alarm", "get alarm time", alarm_time);
-
-    connect_wifi_from_flash();
+    // 同步时间
+    sync_time_sntp();
+//    for (auto i :oled_full_buffer){
+//        printf("%x ",i);
+//    }
 }
 
 void loop() {
@@ -50,11 +71,6 @@ void loop() {
         }
     }
     delay(10);
-//    u8g2.clearBuffer();					// clear the internal memory
-//    u8g2.setFont(u8g2_font_ncenB08_tr);	// choose a suitable font
-//    u8g2.drawStr(0,10,"Hello World!");	// write something to the internal memory
-//    u8g2.sendBuffer();					// transfer internal memory to the display
-//    delay(1000);
 }
 
 // 上电后杯子存在，5秒内杯子移开，移开后5秒内杯子放回，则进入
