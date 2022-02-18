@@ -14,32 +14,37 @@
 #include "lvgl_port.h"
 #include "gui_guider.h"
 #include "oledfont.h"
+#include "u8g2.h"
+#include "u8g2_port.h"
 
-lv_ui guider_ui;
+//lv_ui guider_ui;
+
 
 void setup() {
     ESP_ERROR_CHECK(nvs_flash_init());
     pinMode(LED_Pin, OUTPUT);
     pinMode(SENSOR_Pin, INPUT);
     initialise_wifi();
-    OLED_Init();
+//    OLED_Init();
 //    char ch[] = "helloworld";
-    OLED_Clear();
+//    OLED_Clear();
 //    OLED_FullFlash((char *) test);
 //    OLED_ShowString(0, 0, (uint8_t *) ch, 16);
 //    OLED_ShowString(0, 2, (uint8_t *) ch, 16);
 //    OLED_ShowString(0, 4, (uint8_t *) ch, 16);
 //    OLED_ShowString(0, 6, (uint8_t *) ch, 16);
-    GUI_Init();
-    setup_ui(&guider_ui);
-    xTaskCreate(
-            GUI_Run,
-            "GUI_Run",
-            4096 * 4,
-            NULL,
-            3,
-            NULL
-            );
+//    GUI_Init();
+//    setup_ui(&guider_ui);
+//    xTaskCreate(
+//            GUI_Run,
+//            "GUI_Run",
+//            4096 * 4,
+//            NULL,
+//            3,
+//            NULL
+//            );
+    U8G2_Init();
+
     // 启动检查手势来进入设置，设置完后重启
     settings_action_catch();
     // 尝试使用flash中信息连接WiFi，读不到信息则进入smartconfig
@@ -53,6 +58,11 @@ void setup() {
 //    for (auto i :oled_full_buffer){
 //        printf("%x ",i);
 //    }
+    u8g2_SetFont(&u8g2, u8g2_font_helvB08_tr);
+    u8g2_ClearBuffer(&u8g2);
+    u8g2_DrawStr(&u8g2, 10, 30, "Hello, world!");
+    u8g2_DrawStr(&u8g2, 10, 100, "Hello, larger world!");
+    u8g2_SendBuffer(&u8g2);
 }
 
 void loop() {
