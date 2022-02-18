@@ -11,5 +11,4 @@ void U8G2_Init();
 
 extern u8g2_t u8g2;
 
-
 #endif //MAIN_U8G2_PORT_H
