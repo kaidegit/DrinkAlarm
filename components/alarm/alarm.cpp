@@ -107,5 +107,5 @@ void set_alarm_time() {
 }
 
 void alarm_callback() {
-
+    gpio_set_level((gpio_num_t) LED_Pin, 1);
 }

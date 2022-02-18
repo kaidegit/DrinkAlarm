@@ -70,13 +70,17 @@ void OLED_Time_Task(void *param) {
             sprintf(ch, "%02d:%02d:%02d", hr, min, sec);
             u8g2_DrawUTF8(&u8g2, 12, 24, ch);
         }
-        // todo:进度条
         extern bool isAlarmOn;
+        extern bool isAlarm;
         extern uint16_t alarmStartTime;
         if (isAlarmOn) {
             auto boxlength = (time - alarmStartTime) * 104 / alarm_time / 60;
             if (boxlength > 104){
                 boxlength = 104;
+                if (!isAlarm){
+                    isAlarm = true;
+                    alarm_callback();
+                }
             }
             u8g2_DrawFrame(&u8g2, 12, 42, 104, 12);
             u8g2_DrawBox(&u8g2, 12, 42, boxlength, 12);

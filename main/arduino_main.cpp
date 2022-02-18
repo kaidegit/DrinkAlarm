@@ -15,6 +15,7 @@
 #include "oled.h"
 
 bool isAlarmOn = false;
+bool isAlarm = false;
 uint16_t alarmStartTime;
 
 void setup() {
@@ -52,14 +53,15 @@ void loop() {
         if (state != digitalRead(SENSOR_Pin)) {
             state = digitalRead(SENSOR_Pin);
             if (IS_CUP_ON()) {
+                // should set alarm
                 ESP_LOGI("sensor", "sensor get low");
                 isAlarmOn = true;
                 alarmStartTime = get_time(nullptr,nullptr,nullptr);
-                // should set alarm
             } else {
+                // should reset alarm
                 ESP_LOGI("sensor", "sensor get high");
                 isAlarmOn = false;
-                // should reset alarm
+                isAlarm = false;
             }
         }
     }
