@@ -11,6 +11,8 @@ esp_err_t read_alarm_from_flash();
 
 void alarm_callback();
 
+void http_get_task(void *pvParameters);
+
 extern uint8_t alarm_time;
 
 #endif //MAIN_ALARM_H
