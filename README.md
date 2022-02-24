@@ -44,8 +44,10 @@ PCB使用Altium Designer和KiCAD设计。由于前后距离略长，PCB分为两
 
 主要流程如下：
 
-todo：流程图
+![flow](imgs/flow.png)
 
 ## 效果图
 
-todo
+![main_image](imgs/main_image.png)
+
+![wechat_alarm](imgs/wechat_alarm.png)
