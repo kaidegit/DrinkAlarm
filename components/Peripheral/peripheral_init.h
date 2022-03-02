@@ -16,6 +16,10 @@ void OLED_SPI_Init();
 
 void OLED_GPIO_Init();
 
+void LED_GPIO_Init();
+
+void SENSOR_GPIO_Init();
+
 extern spi_device_handle_t oled_spi_handle;
 
 #ifdef __cplusplus

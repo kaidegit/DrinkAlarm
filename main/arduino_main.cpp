@@ -3,8 +3,8 @@
 //
 
 #include "arduino_main.h"
-#include <Wire.h>
 #include <nvs_flash.h>
+#include <esp_log.h>
 #include "esp_task_wdt.h"
 #include "wifi_smartconfig.h"
 #include "alarm.h"
@@ -18,10 +18,12 @@ bool isAlarmOn = false;
 bool isAlarm = false;
 uint16_t alarmStartTime;
 
+#define delay(_ms) vTaskDelay((_ms) / portTICK_RATE_MS);
+
 void setup() {
     ESP_ERROR_CHECK(nvs_flash_init());
-    pinMode(LED_Pin, OUTPUT);
-    pinMode(SENSOR_Pin, INPUT);
+    LED_GPIO_Init();
+    SENSOR_GPIO_Init();
     initialise_wifi();
     U8G2_Init();
 
@@ -40,18 +42,18 @@ void setup() {
             OLED_Time_Task,
             "oled_time_task",
             4096,
-            NULL,
+            nullptr,
             3,
-            NULL
+            nullptr
     );
 }
 
 void loop() {
-    static int state = HIGH;
-    if (state != digitalRead(SENSOR_Pin)) {
+    static int state = 1;
+    if (state != gpio_get_level((gpio_num_t)SENSOR_Pin)) {
         delay(10);
-        if (state != digitalRead(SENSOR_Pin)) {
-            state = digitalRead(SENSOR_Pin);
+        if (state != gpio_get_level((gpio_num_t)SENSOR_Pin)) {
+            state = gpio_get_level((gpio_num_t)SENSOR_Pin);
             if (IS_CUP_ON()) {
                 // should set alarm
                 ESP_LOGI("sensor", "sensor get low");

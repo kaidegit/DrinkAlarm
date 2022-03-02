@@ -54,6 +54,7 @@ uint8_t u8x8_esp32_gpio_and_delay(
             break;
         case U8X8_MSG_GPIO_CS:
             gpio_set_level((gpio_num_t) OLED_CS_Pin, (uint32_t) arg_int);
+            break;
         case U8X8_MSG_GPIO_DC:
             gpio_set_level((gpio_num_t) OLED_DC_Pin, (uint32_t) arg_int);
             break;
